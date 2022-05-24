@@ -7,8 +7,6 @@
 #5. Check for victory, if not decided yet, continue
 #6. If victory or tie, add a point to winner and instantiate a new Game object
 
-#Module that checks rows, columns and diagonals for consecutive X's/O's
-#and stores a boolean true/false 
 
 module CheckConsecutive
   def check(arr)
@@ -72,20 +70,16 @@ class GameScore
     puts "Player X Wins: #{@@player_X_wins} | Ties: #{@@ties} | Player O Wins: #{@@player_O_wins}"
   end
 
-  def self.increase_score_X
-    @@player_X_wins += 1
-  end
-
-  def self.increase_score_O
-    @@player_O_wins += 1
-  end
-
-  def self.increase_ties
-    @@ties += 1
-  end
-
-  def self.increase_round
+  def increment_score_and_round
     @@round += 1
+    case @turn
+    when 'X'
+      @@player_X_wins += 1
+    when 'O'
+      @@player_O_wins += 1
+    else
+      @@ties += 1
+    end
   end
 end
 
@@ -144,7 +138,7 @@ end
 class Game < GamePlay
   include CheckConsecutive
 
-  attr_accessor :total_plays
+  attr_accessor :total_plays, :start
 
   def initialize
     super
@@ -160,10 +154,23 @@ class Game < GamePlay
       self.get_choice
       self.replace_blank
       self.check_all
-      self.change_turn
+      self.change_turn unless game_over
       self.total_plays += 1
      end
+     @turn = 'tie' if @total_plays >= 9
+     self.increment_score_and_round
+     self.display_board
   end
+
+  def keep_playing
+    loop do
+    puts "Play a round? (Y/N)"
+    @start = gets.chomp.downcase
+    break if @start == 'n'
+    Game.new.play
+    end
+  end
+
 end
 
-Game.new.play
+Game.new.keep_playing
