@@ -8,6 +8,7 @@
 
 #Module that checks rows, columns and diagonals for consecutive X's/O's
 #and stores a boolean true/false 
+
 module CheckConsecutive
   def check(arr)
     arr.any? && arr.flatten.all?(@turn)
@@ -24,23 +25,35 @@ module CheckConsecutive
   end
 
   def check_middle_column
+    clear_test_array
     @gameboard.each_index {|idx| @test_array.push(@gameboard[idx][1])}
     check(@test_array)
   end
 
   def check_last_column
+    clear_test_array
     @gameboard.each_index {|idx| @test_array.push(@gameboard[idx].last)}
     check(@test_array)
   end
 
   def check_first_diagonal
+    clear_test_array
     @gameboard.each_index {|idx| @test_array.push(@gameboard[idx][idx])}
     check(@test_array)
   end
 
   def check_second_diagonal
+    clear_test_array
     @gameboard.each_index {|idx| @test_array.push(@gameboard[idx].reverse[idx])}
     check(@test_array)
+  end
+
+  def clear_test_array
+    @test_array = []
+  end
+
+  def check_all
+    @game_over = [check_rows, check_first_column, check_middle_column, check_last_column, check_first_diagonal, check_second_diagonal].any?
   end
 end
 
@@ -97,7 +110,7 @@ end
 #check win condition
 #While loop that keeps the game running and resets when a win/tie condition is met
 class GamePlay < GameBoard
-  attr_accessor :choice, :players_turn, :turn, :game_over
+  attr_accessor :choice, :players_turn, :turn, :game_over, :checks
 
   def initialize
     super
@@ -137,12 +150,13 @@ class Game < GamePlay
   def initialize
     super
   end
-
-  def check_win
-  end
 end
 
 new_game = Game.new
+new_game.whose_turn?
+new_game.check_all
+print new_game.game_over
+
 
 # while !game_over do
 #   GameScore.display_round
