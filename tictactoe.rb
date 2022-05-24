@@ -119,7 +119,7 @@ class GamePlay < GameBoard
     loop do 
       puts "Pick a spot between 1-9"
       @choice = gets.chomp
-      break if @choice.match?(/[1-9]/)
+      break if @gameboard.flatten.one?(@choice.to_i) && @choice.match?(/[1-9]/)
     end
   end
 
