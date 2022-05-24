@@ -1,4 +1,6 @@
 #Use Rubocop after the logic is complete to tidy up
+#Add comments after completion
+#get_choice should only take 1-9 as input and not move on until so
 #Order of Gameplay
 #1. Display round, gameboard, and score
 #2. Display who's turn it is (X or O)
@@ -99,6 +101,12 @@ class GameBoard < GameScore
   def display_board
     puts "#{@gameboard[0].join(' | ')}\n#{@gameboard[1].join(' | ')}\n#{@gameboard[2].join(' | ')}"
   end
+
+  def display_all
+    GameScore.display_round
+    GameScore.display_score
+    self.display_board
+  end
 end
 
 class GamePlay < GameBoard
@@ -109,11 +117,15 @@ class GamePlay < GameBoard
     super
     @players_turn = true
     @game_over = false
+    @choice = ''
   end
   
   def get_choice
+    loop do 
       puts "Pick a spot between 1-9"
-      @choice = gets.chomp.to_i
+      @choice = gets.chomp
+      break if @choice.match?(/[1-9]/)
+    end
   end
 
   def whose_turn
@@ -127,7 +139,7 @@ class GamePlay < GameBoard
   def replace_blank
     @gameboard.each_with_index do |row, row_index|
       row.each_with_index do |num, column_index|
-        if @gameboard[row_index][column_index] == @choice
+        if @gameboard[row_index][column_index] == @choice.to_i
           @gameboard[row_index][column_index] = @turn
         end
       end
@@ -136,6 +148,7 @@ class GamePlay < GameBoard
 end
 
 class Game < GamePlay
+
   include CheckConsecutive
 
   attr_accessor :total_plays, :start
@@ -147,9 +160,7 @@ class Game < GamePlay
 
   def play
      until game_over || @total_plays >= 9
-      GameScore.display_round
-      GameScore.display_score
-      self.display_board
+      self.display_all
       self.whose_turn
       self.get_choice
       self.replace_blank
@@ -159,18 +170,17 @@ class Game < GamePlay
      end
      @turn = 'tie' if @total_plays >= 9
      self.increment_score_and_round
-     self.display_board
+     self.display_all
   end
 
   def keep_playing
     loop do
-    puts "Play a round? (Y/N)"
+    puts "Play a round? (Any input/No)"
     @start = gets.chomp.downcase
-    break if @start == 'n'
+    break if @start == 'no'
     Game.new.play
     end
   end
-
 end
 
 Game.new.keep_playing
