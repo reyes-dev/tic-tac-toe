@@ -6,6 +6,46 @@
 #4. After it's entered, replace the given number in the array with X or O
 #5. Check for victory, if not decided yet, continue
 
+#Module that checks rows, columns and diagonals for consecutive X's/O's
+#and stores a boolean true/false 
+module CheckConsecutive
+  def check(arr)
+    arr.any? && arr.flatten.all?(@turn)
+  end
+
+  def check_rows
+    @test_array = @gameboard.select { |arr| arr.all?(@turn)}
+    check(@test_array)
+  end
+
+  def check_first_column
+    @gameboard.each_index {|idx| @test_array.push(@gameboard[idx].first)}
+    check(@test_array)
+  end
+
+  def check_middle_column
+    @gameboard.each_index {|idx| @test_array.push(@gameboard[idx][1])}
+    check(@test_array)
+  end
+
+  def check_last_column
+    @gameboard.each_index {|idx| @test_array.push(@gameboard[idx].last)}
+    check(@test_array)
+  end
+
+  def check_first_diagonal
+    @gameboard.each_index {|idx| @test_array.push(@gameboard[idx][idx])}
+    check(@test_array)
+  end
+
+  def check_second_diagonal
+    @gameboard.each_index {|idx| @test_array.push(@gameboard[idx].reverse[idx])}
+    check(@test_array)
+  end
+end
+
+
+
 #Keep track of scores and rounds
 class GameScore
   @@round = 1
@@ -45,6 +85,7 @@ class GameBoard < GameScore
     [4,5,6], 
     [7,8,9]
     ]
+    @test_array = []
   end
 
   def display_board
@@ -56,11 +97,12 @@ end
 #check win condition
 #While loop that keeps the game running and resets when a win/tie condition is met
 class GamePlay < GameBoard
-  attr_accessor :choice, :players_turn, :turn
+  attr_accessor :choice, :players_turn, :turn, :game_over
 
   def initialize
     super
     @players_turn = true
+    @game_over = false
   end
   
   def get_choice
@@ -90,34 +132,25 @@ end
 #Instantiate a game object to start
 #Calls methods up the chain needed to start the game
 class Game < GamePlay
+  include CheckConsecutive
   #Just change to initialize? so that making a new game object sets the whole avalanche off
   def initialize
     super
   end
+
+  def check_win
+  end
 end
 
-my_game = Game.new
-my_game.display_board
-my_game.get_choice
-my_game.whose_turn?
-my_game.replace_blank
-my_game.display_board
+new_game = Game.new
 
-#Gameplay Logic to replace number in array with 'X' or 'O'
-# arr = [[1,2,3], [4,5,6], [7,8,9]]
-# x = 0
-# while x < 9 do
-#   choice = gets.to_i
-
-  # @gameboard.each_with_index do |row, row_index|
-  #   row.each_with_index do |num, column_index|
-  #     puts "Row: #{row_index} Column: #{column_index} = #{num}"
-  #     if arr[row_index][column_index] == @choice
-  #       arr[row_index][column_index] = @turn
-  #     end
-  #   end
-  # end
-  
-#   puts "#{arr[0].join(' | ')}\n#{arr[1].join(' | ')}\n#{arr[2].join(' | ')}"
-#   x += 1
+# while !game_over do
+#   GameScore.display_round
+#   GameScore.display_score
+# my_game.display_board
+# my_game.get_choice
+# my_game.whose_turn?
+# my_game.replace_blank
+# my_game.display_board
+# my_game.change_turn
 # end
