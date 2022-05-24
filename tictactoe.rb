@@ -1,5 +1,3 @@
-#Use Rubocop after the logic is complete to tidy up
-#Add comments, change names and make look nice
 #Order of Gameplay
 #1. Display round, gameboard, and score
 #2. Display who's turn it is (X or O)
@@ -8,6 +6,7 @@
 #5. Check for victory by consecutive X's/O's, if not decided yet, continue looping
 #6. If victory or tie, add a point to winner and instantiate a new Game object
 
+#Methods to check gameboard for matching combo of three X's/O's
 module Checkable
   def check(arr)
     arr.any? && arr.flatten.all?(@turn)
@@ -57,7 +56,7 @@ module Checkable
       check_first_diagonal, check_second_diagonal].any?
   end
 end
-
+#Keeps track, displays and increments the score/rounds
 class GameScore
   @@round = 1
   @@player_X_wins = 0
@@ -81,7 +80,7 @@ class GameScore
     end
   end
 end
-
+#Creates gameboard array and displays it
 class GameBoard < GameScore
   attr_accessor :gameboard, :turn_check_array
 
@@ -104,7 +103,8 @@ class GameBoard < GameScore
     self.display_board
   end
 end
-
+# Takes user input, decides if player 'X' or 'O' turn, changes turn every play
+# Updates gameboard array '1-9' blank slots with 'X' or 'O'
 class GamePlay < GameBoard
   attr_accessor :choice, :players_turn, :turn, :game_over, :checks
 
@@ -141,7 +141,8 @@ class GamePlay < GameBoard
     end
   end
 end
-
+# Loops game until a victor emerges or gameboard is full
+# Takes input on whether to play a round or quit
 class Game < GamePlay
   include Checkable
   attr_accessor :total_plays, :start
@@ -175,5 +176,5 @@ class Game < GamePlay
     end
   end
 end
-
+#Starts the game
 Game.new.keep_playing
