@@ -5,6 +5,7 @@
 #3. Ask for input 1-9
 #4. After it's entered, replace the given number in the array with X or O
 #5. Check for victory, if not decided yet, continue
+#6. If victory or tie, add a point to winner and instantiate a new Game object
 
 #Module that checks rows, columns and diagonals for consecutive X's/O's
 #and stores a boolean true/false 
@@ -57,9 +58,6 @@ module CheckConsecutive
   end
 end
 
-
-
-#Keep track of scores and rounds
 class GameScore
   @@round = 1
   @@player_X_wins = 0
@@ -90,8 +88,11 @@ class GameScore
     @@round += 1
   end
 end
-#Display the board nicely
+
 class GameBoard < GameScore
+
+  attr_accessor :gameboard, :test_array
+
   def initialize
     @gameboard = [
     [1,2,3], 
@@ -105,11 +106,9 @@ class GameBoard < GameScore
     puts "#{@gameboard[0].join(' | ')}\n#{@gameboard[1].join(' | ')}\n#{@gameboard[2].join(' | ')}"
   end
 end
-#Get a number 1-9
-#Replace equivalent number in gameboard array with X or O
-#check win condition
-#While loop that keeps the game running and resets when a win/tie condition is met
+
 class GamePlay < GameBoard
+
   attr_accessor :choice, :players_turn, :turn, :game_over, :checks
 
   def initialize
@@ -123,7 +122,7 @@ class GamePlay < GameBoard
       @choice = gets.chomp.to_i
   end
 
-  def whose_turn?
+  def whose_turn
     @players_turn ? @turn = 'X' : @turn = 'O'
   end
 
@@ -142,29 +141,29 @@ class GamePlay < GameBoard
   end
 end
 
-#Instantiate a game object to start
-#Calls methods up the chain needed to start the game
 class Game < GamePlay
   include CheckConsecutive
-  #Just change to initialize? so that making a new game object sets the whole avalanche off
+
+  attr_accessor :total_plays
+
   def initialize
     super
+    @total_plays = 0
+  end
+
+  def play
+     until game_over || @total_plays >= 9
+      GameScore.display_round
+      GameScore.display_score
+      self.display_board
+      self.whose_turn
+      self.get_choice
+      self.replace_blank
+      self.check_all
+      self.change_turn
+      self.total_plays += 1
+     end
   end
 end
 
-new_game = Game.new
-new_game.whose_turn?
-new_game.check_all
-print new_game.game_over
-
-
-# while !game_over do
-#   GameScore.display_round
-#   GameScore.display_score
-# my_game.display_board
-# my_game.get_choice
-# my_game.whose_turn?
-# my_game.replace_blank
-# my_game.display_board
-# my_game.change_turn
-# end
+Game.new.play
