@@ -1,51 +1,49 @@
 #Use Rubocop after the logic is complete to tidy up
-#Add comments after completion
-#get_choice should only take 1-9 as input and not move on until so
+#Add comments, change names and make look nice
 #Order of Gameplay
 #1. Display round, gameboard, and score
 #2. Display who's turn it is (X or O)
 #3. Ask for input 1-9
 #4. After it's entered, replace the given number in the array with X or O
-#5. Check for victory, if not decided yet, continue
+#5. Check for victory by consecutive X's/O's, if not decided yet, continue looping
 #6. If victory or tie, add a point to winner and instantiate a new Game object
 
-
-module CheckConsecutive
+module Checkable
   def check(arr)
     arr.any? && arr.flatten.all?(@turn)
   end
 
   def check_rows
-    @test_array = @gameboard.select { |arr| arr.all?(@turn)}
+    @test_array = @gameboard.select { |arr| arr.all?(@turn) }
     check(@test_array)
   end
 
   def check_first_column
-    @gameboard.each_index {|idx| @test_array.push(@gameboard[idx].first)}
+    @gameboard.each_index { |idx| @test_array.push(@gameboard[idx].first) }
     check(@test_array)
   end
 
   def check_middle_column
     clear_test_array
-    @gameboard.each_index {|idx| @test_array.push(@gameboard[idx][1])}
+    @gameboard.each_index { |idx| @test_array.push(@gameboard[idx][1]) }
     check(@test_array)
   end
 
   def check_last_column
     clear_test_array
-    @gameboard.each_index {|idx| @test_array.push(@gameboard[idx].last)}
+    @gameboard.each_index { |idx| @test_array.push(@gameboard[idx].last) }
     check(@test_array)
   end
 
   def check_first_diagonal
     clear_test_array
-    @gameboard.each_index {|idx| @test_array.push(@gameboard[idx][idx])}
+    @gameboard.each_index { |idx| @test_array.push(@gameboard[idx][idx]) }
     check(@test_array)
   end
 
   def check_second_diagonal
     clear_test_array
-    @gameboard.each_index {|idx| @test_array.push(@gameboard[idx].reverse[idx])}
+    @gameboard.each_index { |idx| @test_array.push(@gameboard[idx].reverse[idx]) }
     check(@test_array)
   end
 
@@ -54,7 +52,9 @@ module CheckConsecutive
   end
 
   def check_all
-    @game_over = [check_rows, check_first_column, check_middle_column, check_last_column, check_first_diagonal, check_second_diagonal].any?
+    @game_over = [check_rows, check_first_column, 
+      check_middle_column, check_last_column, 
+      check_first_diagonal, check_second_diagonal].any?
   end
 end
 
@@ -75,18 +75,14 @@ class GameScore
   def increment_score_and_round
     @@round += 1
     case @turn
-    when 'X'
-      @@player_X_wins += 1
-    when 'O'
-      @@player_O_wins += 1
-    else
-      @@ties += 1
+    when 'X' then @@player_X_wins += 1
+    when 'O' then @@player_O_wins += 1
+    else @@ties += 1
     end
   end
 end
 
 class GameBoard < GameScore
-
   attr_accessor :gameboard, :test_array
 
   def initialize
@@ -110,7 +106,6 @@ class GameBoard < GameScore
 end
 
 class GamePlay < GameBoard
-
   attr_accessor :choice, :players_turn, :turn, :game_over, :checks
 
   def initialize
@@ -119,7 +114,7 @@ class GamePlay < GameBoard
     @game_over = false
     @choice = ''
   end
-  
+
   def get_choice
     loop do 
       puts "Pick a spot between 1-9"
@@ -148,9 +143,7 @@ class GamePlay < GameBoard
 end
 
 class Game < GamePlay
-
-  include CheckConsecutive
-
+  include Checkable
   attr_accessor :total_plays, :start
 
   def initialize
@@ -159,7 +152,7 @@ class Game < GamePlay
   end
 
   def play
-     until game_over || @total_plays >= 9
+    until game_over || @total_plays >= 9
       self.display_all
       self.whose_turn
       self.get_choice
@@ -167,18 +160,18 @@ class Game < GamePlay
       self.check_all
       self.change_turn unless game_over
       self.total_plays += 1
-     end
-     @turn = 'tie' if @total_plays >= 9
-     self.increment_score_and_round
-     self.display_all
+    end
+    @turn = 'tie' if @total_plays >= 9
+    self.increment_score_and_round
+    self.display_all
   end
 
   def keep_playing
-    loop do
-    puts "Play a round? (Any input/No)"
-    @start = gets.chomp.downcase
-    break if @start == 'no'
-    Game.new.play
+  loop do
+      puts "Play a round? (Any input/No)"
+      @start = gets.chomp.downcase
+      break if @start == 'no'
+      Game.new.play
     end
   end
 end
