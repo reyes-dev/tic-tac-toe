@@ -14,41 +14,41 @@ module Checkable
   end
 
   def check_rows
-    @test_array = @gameboard.select { |arr| arr.all?(@turn) }
-    check(@test_array)
+    @turn_check_array = @gameboard.select { |arr| arr.all?(@turn) }
+    check(@turn_check_array)
   end
 
   def check_first_column
-    @gameboard.each_index { |idx| @test_array.push(@gameboard[idx].first) }
-    check(@test_array)
+    @gameboard.each_index { |idx| @turn_check_array.push(@gameboard[idx].first) }
+    check(@turn_check_array)
   end
 
   def check_middle_column
-    clear_test_array
-    @gameboard.each_index { |idx| @test_array.push(@gameboard[idx][1]) }
-    check(@test_array)
+    clear_turn_check_array
+    @gameboard.each_index { |idx| @turn_check_array.push(@gameboard[idx][1]) }
+    check(@turn_check_array)
   end
 
   def check_last_column
-    clear_test_array
-    @gameboard.each_index { |idx| @test_array.push(@gameboard[idx].last) }
-    check(@test_array)
+    clear_turn_check_array
+    @gameboard.each_index { |idx| @turn_check_array.push(@gameboard[idx].last) }
+    check(@turn_check_array)
   end
 
   def check_first_diagonal
-    clear_test_array
-    @gameboard.each_index { |idx| @test_array.push(@gameboard[idx][idx]) }
-    check(@test_array)
+    clear_turn_check_array
+    @gameboard.each_index { |idx| @turn_check_array.push(@gameboard[idx][idx]) }
+    check(@turn_check_array)
   end
 
   def check_second_diagonal
-    clear_test_array
-    @gameboard.each_index { |idx| @test_array.push(@gameboard[idx].reverse[idx]) }
-    check(@test_array)
+    clear_turn_check_array
+    @gameboard.each_index { |idx| @turn_check_array.push(@gameboard[idx].reverse[idx]) }
+    check(@turn_check_array)
   end
 
-  def clear_test_array
-    @test_array = []
+  def clear_turn_check_array
+    @turn_check_array = []
   end
 
   def check_all
@@ -83,7 +83,7 @@ class GameScore
 end
 
 class GameBoard < GameScore
-  attr_accessor :gameboard, :test_array
+  attr_accessor :gameboard, :turn_check_array
 
   def initialize
     @gameboard = [
@@ -91,7 +91,7 @@ class GameBoard < GameScore
     [4,5,6], 
     [7,8,9]
     ]
-    @test_array = []
+    @turn_check_array = []
   end
 
   def display_board
