@@ -1,10 +1,9 @@
 #Order of Gameplay
 #1. Display round, gameboard, and score
-#2. Display who's turn it is (X or O)
-#3. Ask for input 1-9
-#4. After it's entered, replace the given number in the array with X or O
-#5. Check for victory by consecutive X's/O's, if not decided yet, continue looping
-#6. If victory or tie, add a point to winner and instantiate a new Game object
+#2. Ask for input 1-9
+#3. After it's entered, replace the given number in the array with X or O
+#4. Check for victory by consecutive X's/O's, if not decided yet, continue looping
+#5. If victory or tie, add a point to winner and instantiate a new Game object
 
 #Methods to check gameboard for matching combo of three X's/O's
 module Checkable
