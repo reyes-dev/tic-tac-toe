@@ -290,7 +290,16 @@ describe Game do
   end
 
   describe '#clear_turn_check_array' do
-    
+    subject(:clear_game) { described_class.new }
+
+    context 'When clear_turn_check_array is called on a full array' do
+      it 'Assigns @turn_check_array an empty array' do
+        clear_game.turn_check_array = ['X', 'X', 'X']
+        clear_game.clear_turn_check_array
+        new_arr = clear_game.turn_check_array
+        expect(new_arr).to be_empty
+      end
+    end
   end
 
   describe '#check_all' do
