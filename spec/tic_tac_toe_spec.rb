@@ -277,7 +277,16 @@ describe Game do
   end
 
   describe '#check_second_diagonal' do
-    
+    subject(:second_diag_game) { described_class.new }
+
+    context 'When check_second_diagonal is called' do
+      it 'Stores a reverse diagonal from @gameboard in to @turn_check_array' do
+        second_diag_game.check_second_diagonal
+        turn_arr = second_diag_game.turn_check_array
+        arr = [3, 5, 7]
+        expect(turn_arr).to eq(arr)
+      end
+    end
   end
 
   describe '#clear_turn_check_array' do
