@@ -101,7 +101,21 @@ describe GamePlay do
   end
 
   describe '#whose_turn' do
-    
+    subject(:choice_game) { described_class.new }
+
+    context 'When @players_turn is true' do
+      it "Assigns 'X' to @turn" do
+        choice_game.players_turn = true
+        expect{ choice_game.whose_turn }.to change { choice_game.turn }.to('X')
+      end
+    end
+
+    context 'When @players_turn is false' do
+      it "Assigns 'O' to @turn" do
+        choice_game.players_turn = false
+        expect{ choice_game.whose_turn }.to change { choice_game.turn }.to('O')
+      end
+    end
   end
 
   describe '#change_turn' do
