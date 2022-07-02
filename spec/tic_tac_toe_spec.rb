@@ -329,6 +329,27 @@ describe Game do
   end
 
   describe '#play' do
-    
+    subject(:play_game) { described_class.new }
+
+    context 'When @game_over is true' do
+      it 'Exits the loop' do
+        play_game.game_over = true
+        expect(play_game.play).to be_nil
+      end
+    end
+
+    context 'When @total_plays is equal to 9' do
+      it 'Exits the loop' do
+        play_game.total_plays = 9
+        expect(play_game.play).to be_nil
+      end
+    end
+
+    context 'When @total_plays is equal to 10' do
+      it 'Exits the loop' do
+        play_game.total_plays = 10
+        expect(play_game.play).to be_nil
+      end
+    end
   end
 end
