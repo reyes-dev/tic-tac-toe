@@ -27,13 +27,46 @@ require_relative '../tictactoe.rb'
 # Testing: When I pass in 'X', a method returns 'Y'
 # Or: When a variable passes a condition 'X', returns 'Y'
 
-describe GameScore do
-  describe '#increment_score_and_round' do
-
-  end
-end
-
 describe GamePlay do
+  describe '#increment_score_and_round' do
+    # Test Round increment
+    # Test player_X_wins increment
+    # Test player_O_wins increment
+    # Test ties increment
+    subject(:increment_game) { described_class.new }
+
+    context 'When @@Round is 1' do
+      it 'Adds 1 to @@Round' do
+        increment_game.increment_score_and_round
+        expect(GameScore.class_variable_get(:@@round)).to eq(2)
+      end
+    end
+
+    context "When @turn is 'X'" do
+      it 'Adds 1 to @@player_X_wins' do
+        increment_game.turn = 'X'
+        increment_game.increment_score_and_round
+        expect(GameScore.class_variable_get(:@@player_X_wins)).to eq(1)
+      end
+    end
+
+    context "When @turn is 'O'" do
+      it 'Adds 1 to @@player_O_wins' do
+        increment_game.turn = 'O'
+        increment_game.increment_score_and_round
+        expect(GameScore.class_variable_get(:@@player_O_wins)).to eq(1)
+      end
+    end
+
+    context "When @turn is 'tie'" do
+      it 'Adds 1 to @@ties' do
+        increment_game.turn = 'tie'
+        increment_game.increment_score_and_round
+        expect(GameScore.class_variable_get(:@@ties)).to eq(1)
+      end
+    end
+  end
+
   describe '#get_choice' do
     
   end

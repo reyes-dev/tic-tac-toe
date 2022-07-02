@@ -75,7 +75,7 @@ class GameScore
     case @turn
     when 'X' then @@player_X_wins += 1
     when 'O' then @@player_O_wins += 1
-    else @@ties += 1
+    when 'tie' then @@ties += 1
     end
   end
 end
@@ -176,4 +176,4 @@ class Game < GamePlay
   end
 end
 #Starts the game
-Game.new.keep_playing
+#Game.new.keep_playing
