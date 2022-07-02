@@ -29,6 +29,7 @@ require_relative '../tictactoe.rb'
 
 describe GamePlay do
   describe '#increment_score_and_round' do
+    # Command Method
     # Test Round increment
     # Test player_X_wins increment
     # Test player_O_wins increment
@@ -68,7 +69,35 @@ describe GamePlay do
   end
 
   describe '#get_choice' do
-    
+    # Looping Script Method
+    # Test with @choice between 1 and 9
+    # Test with invalid input, then a valid input
+    subject(:choice_game) { described_class.new }
+
+    context 'When @choice is between 1 and 9' do
+      before do
+        valid_input = '3'
+        allow(choice_game).to receive(:gets).and_return(valid_input)
+      end
+
+      it 'breaks the loop' do
+        expect(choice_game.get_choice).to be_nil
+      end
+    end
+
+    context 'When @choice is invalid' do
+      before do
+        invalid_input = '10'
+        valid_input = '3'
+        allow(choice_game).to receive(:gets).and_return(invalid_input, valid_input)
+      end
+
+      it 'loops once' do
+        message = "Pick a spot between 1-9"
+        expect(choice_game).to receive(:puts).with(message).twice
+        expect(choice_game.get_choice).to be_nil
+      end
+    end
   end
 
   describe '#whose_turn' do
