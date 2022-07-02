@@ -264,7 +264,16 @@ describe Game do
   end
 
   describe '#check_first_diagonal' do
-    
+    subject(:first_diag_game) { described_class.new }
+
+    context 'When check_first_diagonal is called' do
+      it 'Stores a diagonal from @gameboard in to @turn_check_array' do
+        first_diag_game.check_first_diagonal
+        turn_arr = first_diag_game.turn_check_array
+        arr = [1, 5, 9]
+        expect(turn_arr).to eq(arr)
+      end
+    end
   end
 
   describe '#check_second_diagonal' do
