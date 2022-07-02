@@ -159,16 +159,36 @@ describe GamePlay do
 end
 
 describe Game do
-  describe '#play' do
-    
-  end
-
-  describe '#keep_playing' do
-    
-  end
 
   describe '#check' do
+    subject(:check_game) { described_class.new }
 
+    context 'When arr is all equal to @turn' do
+      it 'Returns true' do
+        check_game.turn = 'X'
+        arr = ['X', 'X', 'X']
+        true_check = check_game.check(arr)
+        expect(true_check).to be true
+      end
+    end
+
+    context 'When arr has different elements' do
+      it 'Returns false' do
+        check_game.turn = 'X'
+        arr = ['X', 'O', 'X']
+        false_check = check_game.check(arr)
+        expect(false_check).to be false
+      end
+    end
+
+    context 'When arr is empty' do
+      it 'Returns false' do
+        check_game.turn = 'X'
+        arr = []
+        empty_check = check_game.check(arr)
+        expect(empty_check).to be false
+      end
+    end
   end
 
   describe '#check_rows' do
@@ -200,6 +220,10 @@ describe Game do
   end
 
   describe '#check_all' do
+    
+  end
+
+  describe '#play' do
     
   end
 end
