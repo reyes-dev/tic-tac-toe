@@ -192,7 +192,35 @@ describe Game do
   end
 
   describe '#check_rows' do
-    
+    subject(:rows_game) { described_class.new }
+
+    context 'When a row in @gameboard all equal @turn' do
+      it 'Stores that array in @turn_check_array' do
+        rows_game.turn = 'X'
+        rows_game.gameboard = [
+          ['X','X','X'], 
+          [4,5,6], 
+          [7,8,9]
+          ]
+          rows_game.check_rows
+          arr = rows_game.turn_check_array.flatten
+          expect(arr).to all( be == 'X')
+      end
+    end
+
+    context 'When a row in @gameboard is unequal' do
+      it 'Does not store anything in @turn_check_array' do
+        rows_game.turn = 'X'
+        rows_game.gameboard = [
+          ['X','O','X'], 
+          [4,5,6], 
+          [7,8,9]
+          ]
+          rows_game.check_rows
+          arr = rows_game.turn_check_array.flatten
+          expect(arr).to be_empty
+      end
+    end
   end
 
   describe '#check_first_column' do
