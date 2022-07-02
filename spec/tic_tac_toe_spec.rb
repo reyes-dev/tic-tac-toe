@@ -250,6 +250,16 @@ describe Game do
   end
 
   describe '#check_last_column' do
+    subject(:last_column_game) { described_class.new }
+
+    context 'When check_last_column is called' do
+      it 'Stores the third index of each @gameboard array in @turn_check_array' do
+        last_column_game.check_last_column
+        turn_arr = last_column_game.turn_check_array
+        arr = [3, 6, 9]
+        expect(turn_arr).to eq(arr)
+      end
+    end
     
   end
 
