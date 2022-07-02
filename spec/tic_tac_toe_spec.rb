@@ -119,25 +119,42 @@ describe GamePlay do
   end
 
   describe '#change_turn' do
-    subject(:choice_game) { described_class.new }
+    subject(:change_game) { described_class.new }
 
     context 'When @players_turn is true' do
       it 'Assigns false to @players_turn' do
-        choice_game.players_turn = true
-        expect{ choice_game.change_turn }.to change { choice_game.players_turn }.to(false)
+        change_game.players_turn = true
+        expect{ change_game.change_turn }.to change { change_game.players_turn }.to(false)
       end
     end
 
     context 'When @players_turn is false' do
       it 'Assigns true to @players_turn' do
-        choice_game.players_turn = false
-        expect{ choice_game.change_turn }.to change { choice_game.players_turn }.to(true)
+        change_game.players_turn = false
+        expect{ change_game.change_turn }.to change { change_game.players_turn }.to(true)
       end
     end
   end
 
   describe '#replace_blank' do
-    
+    subject(:replace_game) { described_class.new }
+
+    context "When @choice is 3 and @turn is 'X'" do
+      it "Assigns 'X' to that @gameboard spot" do
+        replace_game.turn = 'X'
+        replace_game.choice = '3'
+        expect { replace_game.replace_blank }.to change { replace_game.gameboard[0][2] }.to('X')
+      end
+    end
+
+    context "When @choice is 10 and @turn is 'X'" do
+      it 'Returns nil' do
+        replace_game.turn = 'X'
+        replace_game.choice = '10'
+        allow(replace_game).to receive(:replace_blank).and_return(nil)
+        expect(replace_game.replace_blank).to be_nil
+      end
+    end
   end
 end
 
