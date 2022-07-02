@@ -224,7 +224,16 @@ describe Game do
   end
 
   describe '#check_first_column' do
-    
+    subject(:first_column_game) { described_class.new }
+
+    context 'When check_first_column is called' do
+      it 'Stores the first index of each @gameboard array in @turn_check_array' do
+        first_column_game.check_first_column
+        turn_arr = first_column_game.turn_check_array
+        arr = [1, 4, 7]
+        expect(turn_arr).to eq(arr)
+      end
+    end
   end
 
   describe '#check_middle_column' do
