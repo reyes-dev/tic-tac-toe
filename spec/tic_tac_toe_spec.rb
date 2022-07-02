@@ -303,7 +303,29 @@ describe Game do
   end
 
   describe '#check_all' do
-    
+    subject(:check_all_game) { described_class.new }
+
+    context 'When check_all is called before the game is over' do
+      it 'Sets @game_over as false' do
+        check_all_game.check_all
+        results = check_all_game.game_over
+        expect(results).to be false
+      end
+    end
+
+    context 'When check_all is called on a game with win condition met' do
+      it 'Sets @game_over to true' do
+        check_all_game.turn = 'X'
+        check_all_game.gameboard = [
+          ['X',2,3], 
+          [4,'X',6], 
+          [7,8,'X']
+          ]
+        check_all_game.check_all
+        results = check_all_game.game_over
+        expect(results).to be true
+      end
+    end
   end
 
   describe '#play' do
