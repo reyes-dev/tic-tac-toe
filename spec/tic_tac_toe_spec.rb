@@ -237,7 +237,16 @@ describe Game do
   end
 
   describe '#check_middle_column' do
-    
+    subject(:middle_column_game) { described_class.new }
+
+    context 'When check_middle_column is called' do
+      it 'Stores the second index of each @gameboard array in @turn_check_array' do
+        middle_column_game.check_middle_column
+        turn_arr = middle_column_game.turn_check_array
+        arr = [2, 5, 8]
+        expect(turn_arr).to eq(arr)
+      end
+    end
   end
 
   describe '#check_last_column' do
